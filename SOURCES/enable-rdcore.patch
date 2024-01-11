@@ -1,0 +1,11 @@
+diff -ur a/Cargo.toml b/Cargo.toml
+--- a/Cargo.toml	1969-12-31 19:00:01.000000000 -0500
++++ b/Cargo.toml	2023-03-14 07:57:14.025021766 -0400
+@@ -195,6 +195,7 @@
+ 
+ [features]
+ docgen = ["dep:clap_mangen"]
++default = ["rdcore"]
+ rdcore = []
+ 
+ [target."cfg(target_arch = \"s390x\")".dependencies.mbrman]
