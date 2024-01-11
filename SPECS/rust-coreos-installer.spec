@@ -5,14 +5,14 @@
 # The library is for internal code reuse and is not a public API
 %global __cargo_is_lib 0
 
-%global dracutcommit 5a456ad690acffb43d49abed9f1940c915d68694
+%global dracutcommit 71817332483aad341ffc666ed69b7869a7a90652
 %global dracutshortcommit %(c=%{dracutcommit}; echo ${c:0:7})
 
 %global crate coreos-installer
 
 Name:           rust-%{crate}
 Version:        0.17.0
-Release:        1%{?dist}
+Release:        4%{?dist}
 Summary:        Installer for Fedora CoreOS and RHEL CoreOS
 
 # Upstream license specification: Apache-2.0
@@ -185,6 +185,15 @@ from the initramfs.
 %endif
 
 %changelog
+* Mon Sep 11 2023 Antonio Murdaca <antoniomurdaca@gmail.com> - 0.17.0-4
+- rebuilt to use rhel-target=exception
+
+* Fri Sep 08 2023 Antonio Murdaca <antoniomurdaca@gmail.com> - 0.17.0-3
+- rebuilt to hopefully fix up builds for 9.3
+
+* Fri Sep 01 2023 Antonio Murdaca <antoniomurdaca@gmail.com> - 0.17.0-2
+- Fix rhbz#2236826
+
 * Tue Mar 14 2023 Benjamin Gilbert <bgilbert@redhat.com> - 0.17.0-1
 - New release
 
