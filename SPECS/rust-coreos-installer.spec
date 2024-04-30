@@ -11,8 +11,8 @@
 %global crate coreos-installer
 
 Name:           rust-%{crate}
-Version:        0.17.0
-Release:        4%{?dist}
+Version:        0.21.0
+Release:        1%{?dist}
 Summary:        Installer for Fedora CoreOS and RHEL CoreOS
 
 # Upstream license specification: Apache-2.0
@@ -22,10 +22,6 @@ Source0:        https://crates.io/api/v1/crates/%{crate}/%{version}/download#/%{
 # not used on Fedora
 Source1:        https://github.com/coreos/%{crate}/releases/download/v%{version}/%{crate}-%{version}-vendor.tar.gz
 Source2:        https://github.com/coreos/coreos-installer-dracut/archive/%{dracutcommit}/coreos-installer-dracut-%{dracutshortcommit}.tar.gz
-
-# The RHEL 8 rust-toolset macros don't let us enable features from the
-# %%cargo_* macros.  Enable rdcore directly in Cargo.toml.
-Patch0:         enable-rdcore.patch
 
 ExclusiveArch:  %{rust_arches}
 %if 0%{?rhel} && !0%{?eln}
@@ -85,6 +81,8 @@ Obsoletes:      coreos-installer-dracut < 0.0.1
 %prep
 %autosetup -n %{crate}-%{version} -p1 -a 2
 %if 0%{?rhel} && !0%{?eln}
+# Hackily enable rdcore manually on RHEL (RHEL macros do not take -f)
+sed -i '/^\[features\]/a \ \ default = ["rdcore"]' Cargo.toml 
 tar xvf %{SOURCE1}
 mkdir -p .cargo
 cat >.cargo/config << EOF
@@ -185,6 +183,16 @@ from the initramfs.
 %endif
 
 %changelog
+* Mon Feb 26 2024 Steven Presti <spresti@redhat.com> - 0.21.0-1
+- New release
+
+* Thu Jan 04 2024 Steven Presti <spresti@redhat.com> - 0.20.0-1
+- New version
+- Remove rdcore patch, and move its logic into %prep
+
+* Tue Nov 28 2023 Steven Presti <spresti@redhat.com> - 0.18.0-1
+- New version
+
 * Mon Sep 11 2023 Antonio Murdaca <antoniomurdaca@gmail.com> - 0.17.0-4
 - rebuilt to use rhel-target=exception
 
