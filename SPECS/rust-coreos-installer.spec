@@ -11,7 +11,7 @@
 %global crate coreos-installer
 
 Name:           rust-%{crate}
-Version:        0.21.0
+Version:        0.22.1
 Release:        1%{?dist}
 Summary:        Installer for Fedora CoreOS and RHEL CoreOS
 
@@ -84,20 +84,10 @@ Obsoletes:      coreos-installer-dracut < 0.0.1
 # Hackily enable rdcore manually on RHEL (RHEL macros do not take -f)
 sed -i '/^\[features\]/a \ \ default = ["rdcore"]' Cargo.toml 
 tar xvf %{SOURCE1}
-mkdir -p .cargo
-cat >.cargo/config << EOF
-[source.crates-io]
-replace-with = "vendored-sources"
-
-[source.vendored-sources]
-directory = "vendor"
-EOF
+%cargo_prep -v vendor
 %else
 %cargo_prep
 %endif
-# Fix SIGSEGV in tests on s390x
-# https://bugzilla.redhat.com/show_bug.cgi?id=1883457
-sed -i 's/"-Ccodegen-units=1",//' .cargo/config
 
 %if !0%{?rhel} || 0%{?eln}
 %generate_buildrequires
@@ -183,6 +173,9 @@ from the initramfs.
 %endif
 
 %changelog
+* Fri Jul 26 2024 Packit <hello@packit.dev> - 0.22.1-1
+- New upstream release
+
 * Mon Feb 26 2024 Steven Presti <spresti@redhat.com> - 0.21.0-1
 - New release
 
