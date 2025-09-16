@@ -11,8 +11,8 @@
 %global crate coreos-installer
 
 Name:           rust-%{crate}
-Version:        0.23.0
-Release:        1%{?dist}
+Version:        0.24.0
+Release:        3%{?dist}
 Summary:        Installer for Fedora CoreOS and RHEL CoreOS
 
 # Upstream license specification: Apache-2.0
@@ -22,6 +22,11 @@ Source0:        https://crates.io/api/v1/crates/%{crate}/%{version}/download#/%{
 # not used on Fedora
 Source1:        https://github.com/coreos/%{crate}/releases/download/v%{version}/%{crate}-%{version}-vendor.tar.gz
 Source2:        https://github.com/coreos/coreos-installer-dracut/archive/%{dracutcommit}/coreos-installer-dracut-%{dracutshortcommit}.tar.gz
+
+# https://github.com/coreos/coreos-installer/pull/1654
+Patch0: 0001-download-format-byte-unit-with-1-decimal-place-preci.patch
+# https://github.com/coreos/coreos-installer/pull/1677
+Patch1: 0002-rootmap-use-full-path-for-root-karg-when-rootfs-is-d.patch
 
 ExclusiveArch:  %{rust_arches}
 %if 0%{?rhel} && !0%{?eln}
@@ -173,6 +178,17 @@ from the initramfs.
 %endif
 
 %changelog
+* Wed Jul 23 2025 Joel Capitao <jcapitao@redhat.com> - 0.24.0-3
+- Use the full path for the 'root=' kernel arg when rootfs on mpath
+  Backport https://github.com/coreos/coreos-installer/pull/1677
+
+* Fri Jul 18 2025 Aashish Radhakrishnan <aaradhak@redhat.com> - 0.24.0-2
+- Restore single-decimal precision to stream output
+  Backport https://github.com/coreos/coreos-installer/pull/1654
+
+* Wed Apr 16 2025 Joel Capitao <jcapitao@redhat.com> - 0.24.0-1
+- Update to latest upstream
+
 * Thu Nov 14 2024 Steven Presti <spresti@redhat.com> - 0.23.0-1
 - new version
 
