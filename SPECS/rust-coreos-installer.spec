@@ -11,7 +11,7 @@
 %global crate coreos-installer
 
 Name:           rust-%{crate}
-Version:        0.23.0
+Version:        0.24.0
 Release:        1%{?dist}
 Summary:        Installer for Fedora CoreOS and RHEL CoreOS
 
@@ -173,6 +173,9 @@ from the initramfs.
 %endif
 
 %changelog
+* Wed Apr 16 2025 Joel Capitao <jcapitao@redhat.com> - 0.24.0-1
+- Update to latest upstream
+
 * Thu Nov 14 2024 Steven Presti <spresti@redhat.com> - 0.23.0-1
 - new version
 
