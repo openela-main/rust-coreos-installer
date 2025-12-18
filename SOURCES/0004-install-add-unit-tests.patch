@@ -1,0 +1,47 @@
+From ef0bc1f08a110eac3279f59d9a7defeac0dd31db Mon Sep 17 00:00:00 2001
+From: yasminvalim <ydesouza@redhat.com>
+Date: Mon, 13 Oct 2025 11:42:48 -0300
+Subject: [PATCH 2/2] install: add unit tests
+
+---
+ src/cmdline/install.rs | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
+
+diff --git a/src/cmdline/install.rs b/src/cmdline/install.rs
+index 206d602..915db59 100644
+--- a/src/cmdline/install.rs
++++ b/src/cmdline/install.rs
+@@ -584,4 +584,30 @@ dest-device: u
+         .expand_config_files()
+         .unwrap_err();
+     }
++
++    /// Test that firstboot-args is manually added to args list when defined
++    #[test]
++    fn test_firstboot_args_manually_added() {
++        let mut f = NamedTempFile::new().unwrap();
++        f.as_file_mut().write_all(b"dest-device: /dev/sda").unwrap();
++
++        let config = InstallConfig::from_args(&[
++            "--config-file",
++            f.path().to_str().unwrap(),
++            "--firstboot-args",
++            "ip=dhcp",
++        ])
++        .unwrap();
++
++        // Verify firstboot-args is defined
++        assert!(config.firstboot_args.is_some());
++        assert_eq!(config.firstboot_args.as_ref().unwrap(), "ip=dhcp");
++
++        // Test expand_config_files to verify manual addition
++        let expanded = config.expand_config_files().unwrap();
++
++        // Should still have firstboot-args
++        assert!(expanded.firstboot_args.is_some());
++        assert_eq!(expanded.firstboot_args.unwrap(), "ip=dhcp");
++    }
+ }
+-- 
+2.51.0
+
