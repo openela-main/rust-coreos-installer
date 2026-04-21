@@ -12,7 +12,7 @@
 
 Name:           rust-%{crate}
 Version:        0.24.0
-Release:        3%{?dist}
+Release:        5%{?dist}
 Summary:        Installer for Fedora CoreOS and RHEL CoreOS
 
 # Upstream license specification: Apache-2.0
@@ -27,6 +27,10 @@ Source2:        https://github.com/coreos/coreos-installer-dracut/archive/%{drac
 Patch0: 0001-download-format-byte-unit-with-1-decimal-place-preci.patch
 # https://github.com/coreos/coreos-installer/pull/1677
 Patch1: 0002-rootmap-use-full-path-for-root-karg-when-rootfs-is-d.patch
+Patch2: 0003-install-check-if-firstboot-args-are-defined-and-add-.patch
+Patch3: 0004-install-add-unit-tests.patch
+# https://github.com/coreos/coreos-installer/pull/1692
+Patch4: 0005-blockdev.rs-uses-blkid-p-instead-of-lsblk-to-bypass-.patch
 
 ExclusiveArch:  %{rust_arches}
 %if 0%{?rhel} && !0%{?eln}
@@ -178,6 +182,14 @@ from the initramfs.
 %endif
 
 %changelog
+* Thu Jan 22 2026 Yasmin Valim <ydesouza@redhat.com> - 0.24.0-5
+- Uses blkid -p instead of lsblk to bypass the cache
+  Backport https://github.com/coreos/coreos-installer/pull/1692
+
+* Wed Dec 24 2025 Yasmin Valim <ydesouza@redhat.com> - 0.24.0-4
+- Check if firstboot args are defined and add them manually 
+  Backport https://github.com/coreos/coreos-installer/pull/1699
+
 * Wed Jul 23 2025 Joel Capitao <jcapitao@redhat.com> - 0.24.0-3
 - Use the full path for the 'root=' kernel arg when rootfs on mpath
   Backport https://github.com/coreos/coreos-installer/pull/1677
