@@ -11,8 +11,8 @@
 %global crate coreos-installer
 
 Name:           rust-%{crate}
-Version:        0.24.0
-Release:        5%{?dist}
+Version:        0.26.0
+Release:        1%{?dist}
 Summary:        Installer for Fedora CoreOS and RHEL CoreOS
 
 # Upstream license specification: Apache-2.0
@@ -22,16 +22,6 @@ Source0:        https://crates.io/api/v1/crates/%{crate}/%{version}/download#/%{
 # not used on Fedora
 Source1:        https://github.com/coreos/%{crate}/releases/download/v%{version}/%{crate}-%{version}-vendor.tar.gz
 Source2:        https://github.com/coreos/coreos-installer-dracut/archive/%{dracutcommit}/coreos-installer-dracut-%{dracutshortcommit}.tar.gz
-
-# https://github.com/coreos/coreos-installer/pull/1654
-Patch0: 0001-download-format-byte-unit-with-1-decimal-place-preci.patch
-# https://github.com/coreos/coreos-installer/pull/1677
-Patch1: 0002-rootmap-use-full-path-for-root-karg-when-rootfs-is-d.patch
-# https://github.com/coreos/coreos-installer/pull/1699
-Patch2: 0003-install-check-if-firstboot-args-are-defined-and-add-.patch
-Patch3: 0004-install-add-unit-tests.patch
-# https://github.com/coreos/coreos-installer/pull/1676/commits/a40af0a3ec13c4fd49b34317e80f6c0bc845b46a
-Patch4: 0005-OCPBUGS-56597-Fix-multipath-configuration.patch
 
 ExclusiveArch:  %{rust_arches}
 %if 0%{?rhel} && !0%{?eln}
@@ -183,22 +173,11 @@ from the initramfs.
 %endif
 
 %changelog
-* Wed Nov 19 2025 Huijing Hei <hhei@redhat.com> - 0.24.0-5
-- rootmap: Inject `mpath.wwid=$WWID` when on multipath
-  Backport https://github.com/coreos/coreos-installer/pull/1676/commits/a40af0a3ec13c4fd49b34317e80f6c0bc845b46a
-  Resolves RHEL-127858
+* Tue Mar 10 2026 Yasmin de Souza <ydesouza@redhat.com> - 0.26.0-1
+- new version
 
-* Mon Nov 3 2025 Yasmin Valim <ydesouza@redhat.com> - 0.24.0-4
-- Check if firstboot args are defined and add them manually 
-  Backport https://github.com/coreos/coreos-installer/pull/1699
-
-* Wed Jul 23 2025 Joel Capitao <jcapitao@redhat.com> - 0.24.0-3
-- Use the full path for the 'root=' kernel arg when rootfs on mpath
-  Backport https://github.com/coreos/coreos-installer/pull/1677
-
-* Fri Jul 18 2025 Aashish Radhakrishnan <aaradhak@redhat.com> - 0.24.0-2
-- Restore single-decimal precision to stream output
-  Backport https://github.com/coreos/coreos-installer/pull/1654
+* Fri Oct 24 2025 Aashish Radhakrishnan - 0.25.0-1
+- New upstream release
 
 * Wed Apr 16 2025 Joel Capitao <jcapitao@redhat.com> - 0.24.0-1
 - Update to latest upstream
